@@ -145,3 +145,46 @@ AUTH_USER_MODEL = "users.User"
 
 PHONENUMBER_DB_FORMAT = "NATIONAL"
 PHONENUMBER_DEFAULT_REGION = "KE"
+
+import logging
+import logging.config
+from django.utils.log import DEFAULT_LOGGING
+
+logger = logging.getLogger(__name__)
+LOG_LEVEL = "INFO"
+
+logging.config.dictConfig(
+    {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "console": {
+                "format": "%(levelname)-8s %(asctime)s %(name)-12s %(message)s"
+            },
+            "file": {"format": "%(levelname)-8s %(asctime)s  %(name)-12s %(message)s"},
+            "django.server": DEFAULT_LOGGING["formatters"]["django.server"],
+        },
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "formatter": "console",
+            },
+            "file": {
+                "level": LOG_LEVEL,
+                "class": "logging.FileHandler",
+                "formatter": "file",
+                "filename": "logs/todo_app.log",
+            },
+            "django.server": DEFAULT_LOGGING["handlers"]["django.server"],
+        },
+        "loggers": {
+            "": {
+                "level": LOG_LEVEL,
+                "handlers": ["console", "file"],
+                "propagate": False,
+            },
+            "apps": {"level": LOG_LEVEL, "handlers": ["console"], "propagate": False},
+            "django.server": DEFAULT_LOGGING["loggers"]["django.server"],
+        },
+    }
+)
