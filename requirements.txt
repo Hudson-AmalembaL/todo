@@ -1,0 +1,5 @@
+Django
+django-environ
+djangorestframework
+django-phonenumber-field
+phonenumbers
